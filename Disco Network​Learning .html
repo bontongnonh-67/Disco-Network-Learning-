@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BONTONG Disco Network</title>
+    <!-- Google Fonts & Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@300;400;600;700&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #00f2fe;
+            --secondary: #4facfe;
+            --accent: #00ff87;
+            --bg-dark: #0a0f1d;
+            --card-bg: rgba(16, 24, 48, 0.85);
+            --text-color: #e2e8f0;
+            --text-muted: #94a3b8;
+            --border-glow: rgba(0, 242, 254, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Kantumruy Pro', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-color);
+            overflow-x: hidden;
+            line-height: 1.6;
+            position: relative;
+        }
+
+        /* Interactive Canvas Background */
+        #network-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Navbar */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 15, 29, 0.85);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-glow);
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo span {
+            color: var(--primary);
+            text-shadow: 0 0 10px var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            transition: 0.3s;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+            text-shadow: 0 0 8px var(--primary);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle at center, rgba(0,242,254,0.08) 0%, transparent 70%);
+            padding: 6rem 2rem 2rem;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 900px;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: fadeInDown 1s ease;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .badge-container {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            background: rgba(0, 242, 254, 0.1);
+            border: 1px solid var(--primary);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: var(--primary);
+            box-shadow: 0 0 10px rgba(0, 242, 254, 0.2);
+        }
+
+        /* Section Styling */
+        section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background: var(--primary);
+            margin: 0.5rem auto 0;
+            box-shadow: 0 0 10px var(--primary);
+        }
+
+        /* About & Mission Cards */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-glow);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(5px);
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 30px rgba(0, 242, 254, 0.2);
+        }
+
+        .card i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+
+        /* Products Section */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .product-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-glow);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: 0.3s;
+            backdrop-filter: blur(5px);
+        }
+
+        .product-card:hover {
+            transform: scale(1.03);
+            border-color: var(--accent);
+            box-shadow: 0 0 20px rgba(0, 255, 135, 0.3);
+        }
+
+        .product-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(0, 242, 254, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 2rem;
+            color: var(--primary);
+        }
+
+        .tag {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin: 0.2rem;
+            color: var(--text-muted);
+        }
+
+        /* Command Section */
+        .cmd-container {
+            background: rgba(5, 8, 17, 0.9);
+            border: 1px solid var(--border-glow);
+            border-radius: 8px;
+            padding: 1.5rem;
+            font-family: 'Fira Code', monospace;
+            overflow-x: auto;
+            position: relative;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(5px);
+        }
+
+        .cmd-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #1e293b;
+            padding-bottom: 0.5rem;
+        }
+
+        .cmd-dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .dot-red { background: #ff5f56; }
+        .dot-yellow { background: #ffbd2e; }
+        .dot-green { background: #27c93f; }
+
+        pre {
+            font-family: 'Fira Code', monospace;
+            color: #a9b7c6;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .keyword { color: #cc7832; font-weight: bold; }
+        .command { color: #9876aa; }
+        .comment { color: #808080; font-style: italic; }
+
+        .copy-btn {
+            background: rgba(0, 242, 254, 0.2);
+            border: 1px solid var(--primary);
+            color: #fff;
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .copy-btn:hover {
+            background: var(--primary);
+            color: #000;
+        }
+
+        /* Contact Section */
+        .contact-box {
+            background: var(--card-bg);
+            border: 1px solid var(--border-glow);
+            border-radius: 12px;
+            padding: 3rem;
+            max-width: 800px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 2rem;
+            backdrop-filter: blur(5px);
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .contact-item i {
+            font-size: 1.8rem;
+            color: var(--primary);
+            width: 45px;
+            height: 45px;
+            background: rgba(0, 242, 254, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .contact-item a {
+            color: var(--text-color);
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .contact-item a:hover {
+            color: var(--primary);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid var(--border-glow);
+            color: var(--text-muted);
+            margin-top: 3rem;
+            background: rgba(10, 15, 29, 0.8);
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HTML5 Canvas for Animated Network Background -->
+    <canvas id="network-bg"></canvas>
+
+    <!-- Header / Navbar -->
+    <header>
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <i class="fa-solid fa-network-wired"></i>
+                BONTONG <span>Disco Network</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#about">អំពីក្រុមហ៊ុន</a></li>
+                <li><a href="#mission">បេសកកម្ម</a></li>
+                <li><a href="#products">ផលិតផល</a></li>
+                <li><a href="#commands">មេរៀន Commands</a></li>
+                <li><a href="#contact">ទំនាក់ទំនង</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="badge-container">
+                <span class="badge"><i class="fa-regular fa-calendar-check"></i> បង្កើត: 05 Oct 2025</span>
+                <span class="badge"><i class="fa-solid fa-rocket"></i> បើកដំណើរការ: 05 Oct 2026</span>
+            </div>
+            <h1>BONTONG Disco Network</h1>
+            <p>ដំណោះស្រាយឧបករណ៍ Network & IT ជំនាន់ថ្មីដែលរួមបញ្ចូល CLI & GUI ងាយស្រួលសិក្សា ដំឡើង និងមានប្រសិទ្ធភាពខ្ពស់</p>
+        </div>
+    </section>
+
+    <!-- About & Biography -->
+    <section id="about">
+        <h2 class="section-title">ជីវប្រវត្តិ និង ព័ត៌មានក្រុមហ៊ុន</h2>
+        <div class="grid-2">
+            <div class="card">
+                <i class="fa-solid fa-microchip"></i>
+                <h3>អំពីការបង្កើត</h3>
+                <p>ក្រុមហ៊ុន BONTONG Disco Network ត្រូវ​បាន​បង្កើត​ឡើង​ក្នុង​គោល​បំណង​ចាប់​​ផ្តើម​ផលិត​និង​អភិវឌ្ឍន៍​​ឧបករណ៍ Network ដូចជា Router, Switch, Camera, និង Access Point។</p>
+            </div>
+            <div class="card">
+                <i class="fa-solid fa-sliders"></i>
+                <h3>លក្ខណៈពិសេស</h3>
+                <p>ឧបករណ៍​ទាំងអស់​ត្រូវ​បាន​រចនា​ឡើង​យ៉ាង​​ពិសេស ដោយ​មាន​ការ​ដាក់​​បញ្ចូល​ទាំង​ការ​ប្រើ Command (CLI) និង GUI ធ្វើ​ឱ្យ​មាន​ភាព​ងាយស្រួល​ក្នុង​ការ​សិក្សា និង​ដំឡើង ដល់​សិស្ស និស្សិត និង​អ្នក​ដំឡើង​អាជីព។</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mission & Target -->
+    <section id="mission">
+        <h2 class="section-title">បេសកកម្ម និង គោលដៅ</h2>
+        <div class="grid-2">
+            <div class="card">
+                <i class="fa-solid fa-bullseye"></i>
+                <h3>Mission (បេសកកម្ម)</h3>
+                <p>ឈ្ពោះទៅរកប្រព័ន្ធបណ្តាញទំនាក់ទំនងដែលមានភាពលឿនរហ័ស សុវត្ថិភាពខ្ពស់ និងរួមចំណែកយ៉ាងសកម្មក្នុងការអភិវឌ្ឍន៍បច្ចេកវិទ្យាឌីជីថលដល់ប្រទេសជាតិ។</p>
+            </div>
+            <div class="card">
+                <i class="fa-solid fa-crosshairs"></i>
+                <h3>Target (គោលដៅ)</h3>
+                <p>សម្រួលដល់សិស្សានុសិស្សឱ្យអាចសិក្សារៀនសូត្របានយ៉ាងងាយស្រួល និងផ្តល់ជូនអតិថិជននូវប្រព័ន្ធ Internet ដែលមានល្បឿនលឿន ស្ថិរភាព និងមានតម្លៃសមរម្យ។</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products">
+        <h2 class="section-title">ឧបករណ៍ និង ផលិតផលទាំងអស់</h2>
+        <div class="products-grid">
+            <div class="product-card">
+                <div class="product-icon"><i class="fa-solid fa-route"></i></div>
+                <h3>BONTONG Routers</h3>
+                <p>រ៉ោតទ័រល្បឿនលឿន គាំទ្រ CLI & GUI</p>
+                <div style="margin-top:1rem;">
+                    <span class="tag">Router d2575</span>
+                    <span class="tag">Router d3075</span>
+                    <span class="tag">Router d3580</span>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-icon"><i class="fa-solid fa-network-wired"></i></div>
+                <h3>BONTONG Switches</h3>
+                <p>Managed Switch Layer 2/3</p>
+                <div style="margin-top:1rem;">
+                    <span class="tag">Switch d2575</span>
+                    <span class="tag">Switch d3075</span>
+                    <span class="tag">Switch d3580</span>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-icon"><i class="fa-solid fa-wifi"></i></div>
+                <h3>Access Points</h3>
+                <p>Wi-Fi 6 Speed & Coverage ធំទូលាយ</p>
+                <div style="margin-top:1rem;">
+                    <span class="tag">AP d2575</span>
+                    <span class="tag">AP d3075</span>
+                    <span class="tag">AP d3580</span>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-icon"><i class="fa-solid fa-laptop"></i></div>
+                <h3>Computers & PC</h3>
+                <p>កុំព្យូទ័រសម្រាប់ធ្វើការ និងសិក្សា</p>
+                <div style="margin-top:1rem;">
+                    <span class="tag">Laptop Pro 15</span>
+                    <span class="tag">Workstation Tower</span>
+                    <span class="tag">Student PC Box</span>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-icon"><i class="fa-solid fa-desktop"></i></div>
+                <h3>Desktop All-in-One</h3>
+                <p>កុំព្យូទ័រអេក្រង់ជាប់ម៉ាស៊ីន ស្អាត ទាន់សម័យ</p>
+                <div style="margin-top:1rem;">
+                    <span class="tag">AIO 24" Slim</span>
+                    <span class="tag">AIO 27" 4K Pro</span>
+                    <span class="tag">AIO Touch Series</span>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-icon"><i class="fa-solid fa-ethernet"></i></div>
+                <h3>Cable Network</h3>
+                <p>ខ្សែបណ្តាញ Network គុណភាពខ្ពស់</p>
+                <div style="margin-top:1rem;">
+                    <span class="tag">Cat6 UTP Cable</span>
+                    <span class="tag">Cat6A Shielded</span>
+                    <span class="tag">Fiber Optic Patch</span>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-icon"><i class="fa-solid fa-server"></i></div>
+                <h3>BONTONG Servers</h3>
+                <p>ម៉ាស៊ីន Server សម្រាប់ Enterprise & Data Center</p>
+                <div style="margin-top:1rem;">
+                    <span class="tag">Rack Server 1U</span>
+                    <span class="tag">Tower Server X2</span>
+                    <span class="tag">Storage NAS Box</span>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-icon"><i class="fa-solid fa-book"></i></div>
+                <h3>Book Learning</h3>
+                <p>សៀវភៅសិក្សា Network & Security</p>
+                <div style="margin-top:1rem;">
+                    <span class="tag">CLI Mastery Guide</span>
+                    <span class="tag">CCNA Fundamental</span>
+                    <span class="tag">BONTONG OS Manual</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Commands Section -->
+    <section id="commands">
+        <h2 class="section-title">បណ្តុំពាក្យបញ្ជា (Commands Guide)</h2>
+
+        <!-- 1. Modes & Navigation -->
+        <div class="cmd-container">
+            <div class="cmd-header">
+                <div class="cmd-dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div>
+                <span style="color: var(--text-muted); font-size: 0.8rem;">១. Modes & Navigation Commands (ការចូល និងផ្លាស់ប្តូរ Mode)</span>
+                <button class="copy-btn" onclick="copyCode('code_mode')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre id="code_mode">
+User EXEC Mode                > Router>
+Privileged EXEC Mode          > Router#
+Global Config Mode            > Router(config)#
+Interface Config Mode         > Router(config-if)#
+Router Config Mode            > Router(config-router)#
+Line Config Mode              > Router(config-line)#
+
+<span class="command">enable</span>                        <span class="comment"># ចូលទៅ Privileged EXEC Mode (User -> Privileged)</span>
+<span class="command">disable</span>                       <span class="comment"># ថយទៅ User EXEC Mode វិញ</span>
+<span class="command">configure terminal</span>            <span class="comment"># ចូល Global Configuration Mode (conf t)</span>
+<span class="command">exit</span>                          <span class="comment"># ថយក្រោយ ១ Level</span>
+<span class="command">end</span>                           <span class="comment"># ត្រឡប់ទៅ Privileged EXEC Mode វិញភ្លាមៗ (CTRL + Z)</span>
+<span class="command">?</span>                             <span class="comment"># បង្ហាញ Help (ពាក្យបញ្ជាទាំងអស់ដែលអាចវាយបានក្នុង Mode នោះ)</span>
+<span class="command">show ?</span>                        <span class="comment"># មើលពាក្យបញ្ជា Show ទាំងអស់</span>
+            </pre>
+        </div>
+
+        <!-- 2. Basic Device Setup -->
+        <div class="cmd-container">
+            <div class="cmd-header">
+                <div class="cmd-dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div>
+                <span style="color: var(--text-muted); font-size: 0.8rem;">២. Basic Device Setup (ការកំណត់មូលដ្ឋាន)</span>
+                <button class="copy-btn" onclick="copyCode('code_basic')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre id="code_basic">
+<span class="command">hostname</span> &lt;NAME&gt;               <span class="comment"># កំណត់ឈ្មោះឧបករណ៍</span>
+<span class="command">banner motd</span> ^C &lt;MESSAGE&gt; ^C   <span class="comment"># បង្កើតសារព្រមានមុនពេល Login</span>
+<span class="command">clock set</span> hh:mm:ss DD Month YYYY <span class="comment"># កំណត់ម៉ោងលើ Device</span>
+<span class="command">service password-encryption</span>   <span class="comment"># កូដនីយកម្ម Password ទាំងអស់កុំឲ្យឃើញជា Plaintext</span>
+<span class="command">no ip domain-lookup</span>           <span class="comment"># បិទការ Search DNS ពេលវាយពាក្យបញ្ជាខុស</span>
+
+<span class="comment"># Password Configurations</span>
+<span class="command">enable secret</span> &lt;PASSWORD&gt;      <span class="comment"># ដាក់ Password ចូល Enable Mode (Encrypted)</span>
+<span class="command">line console</span> 0                <span class="comment"># ចូលទៅកំណត់ Console Port</span>
+ <span class="command">password</span> &lt;PASSWORD&gt;          <span class="comment"># ដាក់ Password លើ Console</span>
+ <span class="command">login</span>                        <span class="comment"># បើកការទាមទារ Password</span>
+ <span class="command">exit</span>
+
+<span class="comment"># Remote Access Setup (SSH / Telnet)</span>
+<span class="command">ip domain-name</span> &lt;DOMAIN&gt;       <span class="comment"># កំណត់ Domain Name សម្រាប់ SSH</span>
+<span class="command">crypto key generate rsa</span>       <span class="comment"># បង្កើត Encryption Key សម្រាប់ SSH (2048 bit)</span>
+<span class="command">ip ssh version</span> 2              <span class="comment"># ប្រើ SSH Version 2</span>
+<span class="command">username</span> &lt;USER&gt; privilege 15 secret &lt;PASS&gt; <span class="comment"># បង្កើត Admin User</span>
+<span class="command">line vty</span> 0 15                 <span class="comment"># ចូល Line Remote (0 ដល់ 15)</span>
+ <span class="command">login local</span>                  <span class="comment"># ប្រើ User local ដែលបានបង្កើត</span>
+ <span class="command">transport input ssh</span>          <span class="comment"># អនុញ្ញាតតែ SSH (ឬ all / telnet)</span>
+ <span class="command">exit</span>
+            </pre>
+        </div>
+
+        <!-- 3. Interface Commands -->
+        <div class="cmd-container">
+            <div class="cmd-header">
+                <div class="cmd-dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div>
+                <span style="color: var(--text-muted); font-size: 0.8rem;">៣. Interface Commands (ការកំណត់ Port & IP)</span>
+                <button class="copy-btn" onclick="copyCode('code_if')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre id="code_if">
+<span class="command">interface</span> &lt;INT_TYPE/NUM&gt;      <span class="comment"># ចូល Interface (ឧទាហរណ៍ int g0/0/0)</span>
+ <span class="command">interface range</span> g0/0 - 24    <span class="comment"># ចូល Interface ច្រើនក្នុងពេលតែមួយ</span>
+ <span class="command">ip address</span> &lt;IP&gt; &lt;MASK&gt;       <span class="comment"># ដាក់ IP Address</span>
+ <span class="command">ipv6 address</span> &lt;IPV6/PREFIX&gt;   <span class="comment"># ដាក់ IPv6 Address</span>
+ <span class="command">description</span> &lt;TEXT&gt;           <span class="comment"># ដាក់ការពិពណ៌នាលើ Port</span>
+ <span class="command">no shutdown</span>                  <span class="comment"># បើកដំណើរការ Port</span>
+ <span class="command">shutdown</span>                     <span class="comment"># បិទ Port</span>
+ <span class="command">duplex</span> [auto | full | half]  <span class="comment"># កំណត់ Duplex Mode</span>
+ <span class="command">speed</span> [auto | 10 | 100 | 1000] <span class="comment"># កំណត់ ល្បឿន Port</span>
+            </pre>
+        </div>
+
+        <!-- 4. Switching & VLAN -->
+        <div class="cmd-container">
+            <div class="cmd-header">
+                <div class="cmd-dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div>
+                <span style="color: var(--text-muted); font-size: 0.8rem;">៤. Switching & VLAN Commands (L2 / L3 Switching)</span>
+                <button class="copy-btn" onclick="copyCode('code_vlan')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre id="code_vlan">
+<span class="comment"># VLAN Configurations</span>
+<span class="command">vlan</span> &lt;VLAN_ID&gt;                <span class="comment"># បង្កើត VLAN (ឧ. vlan 10)</span>
+ <span class="command">name</span> &lt;VLAN_NAME&gt;             <span class="comment"># ដាក់ឈ្មោះ VLAN</span>
+<span class="command">vtp mode</span> [server | client | transparent | off] <span class="comment"># កំណត់ VTP Mode</span>
+<span class="command">vtp domain</span> &lt;DOMAIN_NAME&gt;      <span class="comment"># កំណត់ VTP Domain</span>
+
+<span class="comment"># Switchport Modes</span>
+<span class="command">interface</span> &lt;INT&gt;
+ <span class="command">switchport mode access</span>       <span class="comment"># កំណត់ Mode ជា Access</span>
+ <span class="command">switchport access vlan</span> &lt;ID&gt;  <span class="comment"># ដាក់ Port ចូលក្នុង VLAN</span>
+ <span class="command">switchport mode trunk</span>        <span class="comment"># កំណត់ Mode ជា Trunk</span>
+ <span class="command">switchport trunk allowed vlan</span> &lt;IDs&gt; <span class="comment"># កំណត់ VLAN ដែលអនុញ្ញាតលើ Trunk</span>
+ <span class="command">switchport trunk native vlan</span> &lt;ID&gt;   <span class="comment"># កំណត់ Native VLAN</span>
+
+<span class="comment"># Spanning Tree Protocol (STP)</span>
+<span class="command">spanning-tree mode</span> [pvst | rapid-pvst | mst] <span class="comment"># កំណត់ STP Mode</span>
+<span class="command">spanning-tree vlan</span> &lt;ID&gt; root primary        <span class="comment"># កំណត់ Switch ជា Primary Root Bridge</span>
+<span class="command">spanning-tree portfast</span>                      <span class="comment"># បើក PortFast លើ Access Port</span>
+<span class="command">spanning-tree bpduguard enable</span>              <span class="comment"># បើក BPDU Guard ការពារ Loop</span>
+
+<span class="comment"># EtherChannel (Link Aggregation)</span>
+<span class="command">interface range</span> g0/1 - 2
+ <span class="command">channel-group</span> 1 mode [active | passive | auto | desirable | on] <span class="comment"># បង្កើត EtherChannel</span>
+<span class="command">interface port-channel</span> 1
+ <span class="command">switchport mode trunk</span>
+            </pre>
+        </div>
+
+        <!-- 5. IP Services & DHCP -->
+        <div class="cmd-container">
+            <div class="cmd-header">
+                <div class="cmd-dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div>
+                <span style="color: var(--text-muted); font-size: 0.8rem;">៥. IP Services & DHCP Commands</span>
+                <button class="copy-btn" onclick="copyCode('code_dhcp')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre id="code_dhcp">
+<span class="comment"># DHCP Server Setup</span>
+<span class="command">ip dhcp excluded-address</span> &lt;START_IP&gt; &lt;END_IP&gt; <span class="comment"># លុប IP មិនឲ្យចែក</span>
+<span class="command">ip dhcp pool</span> &lt;POOL_NAME&gt;      <span class="comment"># បង្កើត DHCP Pool</span>
+ <span class="command">network</span> &lt;NET_IP&gt; &lt;MASK&gt;      <span class="comment"># កំណត់ Network</span>
+ <span class="command">default-router</span> &lt;GW_IP&gt;       <span class="comment"># កំណត់ Default Gateway</span>
+ <span class="command">dns-server</span> &lt;DNS1&gt; &lt;DNS2&gt;     <span class="comment"># កំណត់ DNS Server</span>
+ <span class="command">domain-name</span> &lt;DOMAIN&gt;         <span class="comment"># កំណត់ Domain Name</span>
+ <span class="command">lease</span> &lt;DAYS&gt; &lt;HOURS&gt; &lt;MINS&gt;  <span class="comment"># កំណត់ Lease Time</span>
+ <span class="command">exit</span>
+
+<span class="comment"># DHCP Relay Agent (លើ Router Interface)</span>
+<span class="command">interface</span> &lt;INT&gt;
+ <span class="command">ip helper-address</span> &lt;DHCP_SERVER_IP&gt; <span class="comment"># ចម្លង DHCP Request ទៅ DHCP Server ឆ្ងាយ</span>
+ <span class="command">exit</span>
+            </pre>
+        </div>
+
+        <!-- 6. Routing Commands -->
+        <div class="cmd-container">
+            <div class="cmd-header">
+                <div class="cmd-dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div>
+                <span style="color: var(--text-muted); font-size: 0.8rem;">៦. Routing Commands (Static & Dynamic Protocols)</span>
+                <button class="copy-btn" onclick="copyCode('code_routing')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre id="code_routing">
+<span class="comment"># Static & Default Routes</span>
+<span class="command">ip route</span> &lt;DEST_NET&gt; &lt;MASK&gt; &lt;NEXT_HOP_IP&gt; <span class="comment"># Static Route</span>
+<span class="command">ip route</span> 0.0.0.0 0.0.0.0 &lt;NEXT_HOP_IP&gt;   <span class="comment"># Default Route</span>
+
+<span class="comment"># RIP Protocol</span>
+<span class="command">router rip</span>
+ <span class="command">version</span> 2
+ <span class="command">network</span> &lt;NET_IP&gt;             <span class="comment"># ប្រកាស Classful Network</span>
+ <span class="command">no auto-summary</span>              <span class="comment"># បិទ Auto Summary</span>
+ <span class="command">exit</span>
+
+<span class="comment"># OSPF Protocol</span>
+<span class="command">router ospf</span> &lt;PROCESS_ID&gt;
+ <span class="command">router-id</span> &lt;ID_IP&gt;            <span class="comment"># កំណត់ Router ID (ឧ. 1.1.1.1)</span>
+ <span class="command">network</span> &lt;NET_IP&gt; &lt;WILDCARD&gt; area &lt;AREA_ID&gt; <span class="comment"># ប្រកាស Network ជាមួយ Wildcard</span>
+ <span class="command">passive-interface</span> &lt;INT&gt;      <span class="comment"># បិទ OSPF Hello លើ Port Client</span>
+ <span class="command">exit</span>
+
+<span class="comment"># EIGRP Protocol</span>
+<span class="command">router eigrp</span> &lt;AS_NUMBER&gt;
+ <span class="command">router-id</span> &lt;ID_IP&gt;
+ <span class="command">network</span> &lt;NET_IP&gt; &lt;WILDCARD&gt;
+ <span class="command">no auto-summary</span>
+ <span class="command">exit</span>
+
+<span class="comment"># BGP Protocol</span>
+<span class="command">router bgp</span> &lt;AS_NUMBER&gt;
+ <span class="command">neighbor</span> &lt;IP&gt; remote-as &lt;REMOTE_AS&gt; <span class="comment"># ភ្ជាប់ជាមួយ BGP Neighbor</span>
+ <span class="command">network</span> &lt;NET_IP&gt; mask &lt;MASK&gt;        <span class="comment"># ប្រកាស Network</span>
+ <span class="command">exit</span>
+            </pre>
+        </div>
+
+        <!-- 7. Security & ACL -->
+        <div class="cmd-container">
+            <div class="cmd-header">
+                <div class="cmd-dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div>
+                <span style="color: var(--text-muted); font-size: 0.8rem;">៧. Security & Access Control Lists (ACL)</span>
+                <button class="copy-btn" onclick="copyCode('code_acl')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre id="code_acl">
+<span class="comment"># Standard ACL (1-99, 1300-1999) - ពិនិត្យតែ Source IP</span>
+<span class="command">access-list</span> &lt;1-99&gt; [permit | deny] &lt;SOURCE_IP&gt; &lt;WILDCARD&gt;
+<span class="command">access-list</span> 1 permit host 192.168.1.10
+
+<span class="comment"># Extended ACL (100-199, 2000-2699) - ពិនិត្យ Src, Dst, Protocol & Port</span>
+<span class="command">access-list</span> &lt;100-199&gt; [permit | deny] &lt;PROTOCOL&gt; &lt;SRC_IP&gt; &lt;SRC_WILD&gt; &lt;DST_IP&gt; &lt;DST_WILD&gt; eq &lt;PORT&gt;
+<span class="command">access-list</span> 100 deny tcp host 192.168.1.50 host 10.0.0.1 eq 80
+<span class="command">access-list</span> 100 permit ip any any
+
+<span class="comment"># Named ACL (Standard & Extended)</span>
+<span class="command">ip access-list extended</span> &lt;NAME&gt;
+ <span class="command">deny tcp host</span> 192.168.1.50 host 10.0.0.1 eq 443
+ <span class="command">permit ip any any</span>
+ <span class="command">exit</span>
+
+<span class="comment"># Apply ACL ទៅ Interface ឬ Line</span>
+<span class="command">interface</span> &lt;INT&gt;
+ <span class="command">ip access-group</span> &lt;ACL_NAME/NUM&gt; [in | out]
+<span class="command">line vty</span> 0 15
+ <span class="command">access-class</span> &lt;ACL_NAME/NUM&gt; in               <span class="comment"># កំណត់ IP ដែលអាច SSH/Telnet ចូលបាន</span>
+
+<span class="comment"># Switch Port Security</span>
+<span class="command">interface</span> &lt;INT&gt;
+ <span class="command">switchport mode access</span>
+ <span class="command">switchport port-security</span>
+ <span class="command">switchport port-security maximum</span> &lt;NUM&gt;
+ <span class="command">switchport port-security mac-address sticky</span>
+ <span class="command">switchport port-security violation</span> [protect | restrict | shutdown]
+            </pre>
+        </div>
+
+        <!-- 8. NAT / PAT Commands -->
+        <div class="cmd-container">
+            <div class="cmd-header">
+                <div class="cmd-dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div>
+                <span style="color: var(--text-muted); font-size: 0.8rem;">៨. NAT / PAT Commands (Network Address Translation)</span>
+                <button class="copy-btn" onclick="copyCode('code_nat_all')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre id="code_nat_all">
+<span class="comment"># 1. កំណត់ Inside & Outside Interfaces</span>
+<span class="command">interface</span> &lt;INT_INSIDE&gt;
+ <span class="command">ip nat inside</span>
+<span class="command">interface</span> &lt;INT_OUTSIDE&gt;
+ <span class="command">ip nat outside</span>
+
+<span class="comment"># Static NAT (1 to 1 Mapping)</span>
+<span class="command">ip nat inside source static</span> &lt;PRIVATE_IP&gt; &lt;PUBLIC_IP&gt;
+
+<span class="comment"># Dynamic NAT / PAT (Port Address Translation - Overload)</span>
+<span class="command">access-list</span> 1 permit 192.168.1.0 0.0.0.255
+<span class="command">ip nat inside source list</span> 1 interface &lt;OUTSIDE_INT&gt; overload
+            </pre>
+        </div>
+
+        <!-- 9. Troubleshooting & Monitoring Commands -->
+        <div class="cmd-container">
+            <div class="cmd-header">
+                <div class="cmd-dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div>
+                <span style="color: var(--text-muted); font-size: 0.8rem;">៩. Troubleshooting & Monitoring Commands (Show & Debug)</span>
+                <button class="copy-btn" onclick="copyCode('code_diag')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre id="code_diag">
+<span class="comment"># Verification (Show Commands)</span>
+<span class="command">show running-config</span>           <span class="comment"># មើល Running Configuration ទាំងអស់ (sh run)</span>
+<span class="command">show startup-config</span>           <span class="comment"># មើល Configuration ដែលបាន Save ក្នុង NVRAM</span>
+<span class="command">show ip interface brief</span>       <span class="comment"># មើល Interface Status & IP (sh ip int br)</span>
+<span class="command">show ip route</span>                 <span class="comment"># មើល Routing Table</span>
+<span class="command">show vlan brief</span>               <span class="comment"># មើល VLANs ទាំងអស់</span>
+<span class="command">show interfaces status</span>        <span class="comment"># មើល Status នៃ Switch Ports</span>
+<span class="command">show mac address-table</span>        <span class="comment"># មើល MAC Address Table លើ Switch</span>
+<span class="command">show cdp neighbors</span>            <span class="comment"># មើល Cisco Devices ដែលភ្ជាប់ជាប់គ្នា (sh cdp nei)</span>
+<span class="command">show cdp neighbors detail</span>     <span class="comment"># មើល Detail/IP របស់ Neighbor Devices</span>
+<span class="command">show ip dhcp binding</span>          <span class="comment"># មើល IP ដែល DHCP បានចែក</span>
+<span class="command">show ip nat translations</span>      <span class="comment"># មើល តារាង NAT Translation</span>
+<span class="command">show access-lists</span>             <span class="comment"># មើល ACL និង Match Counts</span>
+<span class="command">show processes cpu</span>            <span class="comment"># មើល CPU Utilization</span>
+<span class="command">show memory statistics</span>        <span class="comment"># មើល RAM Utilization</span>
+<span class="command">show log</span>                      <span class="comment"># មើល System Logs</span>
+
+<span class="comment"># Diagnostic Tools</span>
+<span class="command">ping</span> &lt;IP&gt;                     <span class="comment"># Test Connectivity</span>
+<span class="command">traceroute</span> &lt;IP&gt;               <span class="comment"># ស្វែងរក Path ទៅ Destination</span>
+<span class="command">debug ip packet</span>               <span class="comment"># មើល IP Packets ក្នុង Real-time</span>
+<span class="command">debug ip ospf events</span>          <span class="comment"># Debug OSPF</span>
+<span class="command">undebug all</span>                   <span class="comment"># បិទ Debug ទាំងអស់ (un all)</span>
+            </pre>
+        </div>
+
+        <!-- 10. File System & Maintenance Commands -->
+        <div class="cmd-container">
+            <div class="cmd-header">
+                <div class="cmd-dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div>
+                <span style="color: var(--text-muted); font-size: 0.8rem;">១០. File System & Maintenance Commands</span>
+                <button class="copy-btn" onclick="copyCode('code_fs')"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
+            <pre id="code_fs">
+<span class="command">copy running-config startup-config</span>  <span class="comment"># រក្សាទុក Config (ឬវាយ: write / wr)</span>
+<span class="command">copy running-config tftp:</span>          <span class="comment"># Backup Config ទៅ TFTP Server</span>
+<span class="command">copy tftp: running-config</span>          <span class="comment"># Restore Config ពី TFTP Server</span>
+<span class="command">copy flash: tftp:</span>                  <span class="comment"># Backup IOS Image</span>
+<span class="command">erase startup-config</span>               <span class="comment"># លុប Config ទាំងអស់ក្នុង NVRAM (Reset Device)</span>
+<span class="command">delete flash:</span>&lt;FILENAME&gt;            <span class="comment"># លុប File ក្នុង Flash Memory</span>
+<span class="command">dir flash:</span>                         <span class="comment"># មើល File ទាំងអស់ក្នុង Flash Memory</span>
+<span class="command">reload</span>                             <span class="comment"># Reboot ឧបករណ៍</span>
+            </pre>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <h2 class="section-title">ទំនាក់ទំនង (Contact Us)</h2>
+        <div class="contact-box">
+            <div class="contact-item">
+                <i class="fa-solid fa-phone"></i>
+                <div>
+                    <h4>ទូរស័ព្ទ</h4>
+                    <p>0963292280</p>
+                </div>
+            </div>
+            <div class="contact-item">
+                <i class="fa-brands fa-facebook"></i>
+                <div>
+                    <h4>Facebook Page</h4>
+                    <p><a href="https://facebook.com" target="_blank">Isme Tong</a></p>
+                </div>
+            </div>
+            <div class="contact-item">
+                <i class="fa-brands fa-telegram"></i>
+                <div>
+                    <h4>Telegram</h4>
+                    <p><a href="https://t.me/Nonh_Bontong2007" target="_blank">@Nonh_Bontong2007</a></p>
+                </div>
+            </div>
+            <div class="contact-item">
+                <i class="fa-solid fa-envelope"></i>
+                <div>
+                    <h4>Gmail</h4>
+                    <p style="font-size: 0.85rem;">bontong.nonh@fellow.passerellesnumeriques.org</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 BONTONG Disco Network. All Rights Reserved.</p>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        function copyCode(id) {
+            const codeText = document.getElementById(id).innerText;
+            navigator.clipboard.writeText(codeText).then(() => {
+                alert('ចម្លងកូដបានជោគជ័យ!');
+            });
+        }
+
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.style.boxShadow = '0 5px 20px rgba(0, 242, 254, 0.2)';
+            } else {
+                header.style.boxShadow = 'none';
+            }
+        });
+
+        /* Network Background Animation Script */
+        const canvas = document.getElementById('network-bg');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        // Nodes Settings
+        const nodes = [];
+        const numNodes = Math.min(Math.floor(window.innerWidth / 20), 60); // Responsive count
+        const maxDistance = 160;
+
+        for (let i = 0; i < numNodes; i++) {
+            nodes.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                vx: (Math.random() - 0.5) * 0.8,
+                vy: (Math.random() - 0.5) * 0.8,
+                radius: Math.random() * 2 + 2
+            });
+        }
+
+        // Data Packets (Traffic)
+        const packets = [];
+        const maxPackets = 25;
+
+        function createPacket(startNode, endNode) {
+            return {
+                x: startNode.x,
+                y: startNode.y,
+                startX: startNode.x,
+                startY: startNode.y,
+                targetX: endNode.x,
+                targetY: endNode.y,
+                progress: 0,
+                speed: Math.random() * 0.015 + 0.008, // Packet speed
+                color: Math.random() > 0.5 ? '#00f2fe' : '#00ff87'
+            };
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Update & Draw Nodes
+            nodes.forEach((node, index) => {
+                node.x += node.vx;
+                node.y += node.vy;
+
+                // Bounce off edges
+                if (node.x < 0 || node.x > canvas.width) node.vx *= -1;
+                if (node.y < 0 || node.y > canvas.height) node.vy *= -1;
+
+                // Draw Node Point
+                ctx.beginPath();
+                ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(0, 242, 254, 0.8)';
+                ctx.shadowBlur = 8;
+                ctx.shadowColor = '#00f2fe';
+                ctx.fill();
+                ctx.shadowBlur = 0; // reset glow
+
+                // Connect Nodes (Network Lines)
+                for (let j = index + 1; j < nodes.length; j++) {
+                    const otherNode = nodes[j];
+                    const dx = otherNode.x - node.x;
+                    const dy = otherNode.y - node.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < maxDistance) {
+                        ctx.beginPath();
+                        ctx.moveTo(node.x, node.y);
+                        ctx.lineTo(otherNode.x, otherNode.y);
+                        const alpha = (1 - dist / maxDistance) * 0.35;
+                        ctx.strokeStyle = `rgba(0, 242, 254, ${alpha})`;
+                        ctx.lineWidth = 1;
+                        ctx.stroke();
+
+                        // Chance to spawn network traffic packet
+                        if (packets.length < maxPackets && Math.random() < 0.002) {
+                            packets.push(createPacket(node, otherNode));
+                        }
+                    }
+                }
+            });
+
+            // Update & Draw Traffic (Packets)
+            for (let i = packets.length - 1; i >= 0; i--) {
+                const p = packets[i];
+                p.progress += p.speed;
+
+                if (p.progress >= 1) {
+                    packets.splice(i, 1);
+                    continue;
+                }
+
+                p.x = p.startX + (p.targetX - p.startX) * p.progress;
+                p.y = p.startY + (p.targetY - p.startY) * p.progress;
+
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
+                ctx.fillStyle = p.color;
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = p.color;
+                ctx.fill();
+                ctx.shadowBlur = 0;
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+    </script>
+</body>
+</html>
